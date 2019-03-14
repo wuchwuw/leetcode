@@ -54,6 +54,100 @@ class BinarySearchTree {
   levelOrder () {
     levelOrder(this.root)
   }
+
+  minimum () {
+    if (this.size === 0)
+      throw new Error('BST is empty')
+    return minimum(this.root)
+  }
+
+  maximum () {
+    if (this.size === 0)
+      throw new Error('BST is empty')
+    return maximum(this.root)
+  }
+
+  removeMin () {
+    let ret = this.minimum()
+    this.root = removeMin(this.root)
+    this.size --
+    return ret.e
+  }
+
+  removeMax () {
+    let ret = this.maximum()
+    this.root = removeMax(this.root)
+    this.size --
+    return ret.e
+  }
+  
+  remove (e) {
+    this.root = remove(this.root, e)
+  }
+}
+
+function remove (node, e) {
+  if (node === null) {
+    return  null
+  }
+
+  if (node.e > e) {
+    node.left = remove(node.left, e)
+    return node
+  } else if (node.e < e) {
+    node.right = remove(node.right.e)
+    return node
+  } else {
+    if (node.left === null) {
+      let rightNode = node.right
+      node.right = null
+      // size --
+      return rightNode
+    }
+    if (node.right === null) {
+      let leftNode = node.left
+      node.left = null
+      // size --
+      return leftNode
+    }
+    // 找到当前要删除的节点的后继节点
+    let min = minimum(node.right)
+    min.right = removeMin(node.right)
+    min.left = node.left
+    return min
+  }
+}
+
+function removeMax (node) {
+  if (node.right === null) {
+    let leftNode = node.left
+    node.left = null
+    return leftNode
+  }
+  node.right = removeMin(node.right)
+  return node
+}
+
+function removeMin (node) {
+  if (node.left === null) {
+    let rightNode = node.right
+    node.right = null
+    return rightNode
+  }
+  node.left = removeMin(node.left)
+  return node
+}
+
+function maximum () {
+  if (node.right === null)
+    return node.e
+  return maximum(node.right)
+}
+
+function minimum (node) {
+  if (node.left === null)
+    return node.e
+  return minimun(node.left)
 }
 
 function addTreeNode(node, e) {
@@ -138,12 +232,15 @@ function levelOrder (node) {
   }
 }
 
-if (node.left === null) {
-  if (node.right) {
-    return node.right
-  } else {
-    return null
-  }
-}
-node.left = x(node.left)
-return node
+var uniqueMorseRepresentations = function(words) {
+  let code = [".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."]
+  let set = new Set()
+  words.forEach((item) => {
+    let str = ''
+    for (let i = 0, len = item.length; i < len; i++) {
+      str += code[item[i].charCodeAt() - 97]
+    }
+    set.add(str)
+  })
+  return set.size
+};
