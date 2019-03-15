@@ -1,3 +1,14 @@
+/**
+ * 堆
+ * 1、完全二叉树
+ * 2、根节点最大为最大堆，反之为最小堆
+ * 3、使用数组来实现二叉堆，有以下特性
+ * (i = 1...n)                              (i = 0...n)
+ * parent(i) = child(i) / 2 (向下取整)   or   parent(i)     = child(i) + 1 / 2 (向下取整)
+ * child left(i) = parent(i) * 2            left child(i)  = parent(i) * 2 + 1
+ * child right(i) = parent(i) * 2 + 1       right child(i) = parent(i) * 2 + 2
+ */
+
 class MaxHeap {
   constructor (arr = []) {
     this.heap = heapify(arr)
@@ -16,12 +27,20 @@ class MaxHeap {
     return this.heap.length
   }
 
+  isEmpty () {
+    return this.heap.length === 0
+  }
+
   add (e) {
     this.heap.push(e)
     siftUp(this.getSize() - 1, this.heap)
   }
 
-  remove () {
+  findMax () {
+    return this.heap[0]
+  }
+
+  extractMax () {
     let ret = this.heap[0]
     swap(this.heap, 0, this.getSize() - 1)
     this.heap.pop()
