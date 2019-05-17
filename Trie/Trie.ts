@@ -12,6 +12,7 @@ class TreeNode {
 }
 
 class Trie {
+  
   private root: TreeNode
   // 记录单词数
   private size: number
