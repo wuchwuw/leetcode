@@ -50,8 +50,84 @@ class BST<E> {
     this._levelOrder(callback)
   }
 
+  minimum (): E {
+    if (this.size === 0) {
+      throw new Error('')
+    }
+    return this._minimum(this.root).e
+  }
+
+  maximum (): E {
+    if (this.size === 0) {
+      throw new Error('')
+    }
+    return this._maximum(this.root).e
+  }
+
   removeMin (): E {
-    
+    let ret: E = this.minimum()
+    this.root = this._removeMin(this.root)
+    return ret
+  }
+
+  removeMax (): E {
+    let ret: E = this.maximum()
+    this.root = this._removeMax(this.root)
+    return ret
+  }
+
+  remove (e: E): void {
+    this.root = this._remove(this.root, e)
+  }
+
+  private _remove (node: BSTNode<E>, e: E): BSTNode<E> {
+    if (this.compareTo(node.e, e) === 0) {
+      if (node.left === null) {
+        let rightNode = node.right
+        node.right = null
+        this.size --
+        return rightNode
+      } else if (node.right === null) {
+        let leftNode = node.left
+        node.left = null
+        this.size --
+        return leftNode
+      } else {
+        let minNode = this._minimum(node.right)
+        minNode.right = this._removeMin(node.right)
+        minNode.left = node.left
+        node.left = node.right = null
+        return minNode
+      }
+    } else if (this.compareTo(node.e, e) > 0) {
+      node.right = this._remove(node.right, e)
+      return node
+    } else {
+      node.left = this._remove(node.left, e)
+      return node
+    }
+  }
+
+  private _removeMin (node: BSTNode<E>): BSTNode<E> {
+    if (node.left === null) {
+      let rightNode = node.right
+      node.right = null
+      this.size --
+      return rightNode
+    }
+    node.left = this._removeMin(node.left)
+    return node
+  }
+
+  private _removeMax (node: BSTNode<E>): BSTNode<E> {
+    if (node.right === null) {
+      let leftNode = node.left
+      node.left = null
+      this.size --
+      return leftNode
+    }
+    node.right = this._removeMin(node.right)
+    return node
   }
 
   private _add (node: BSTNode<E>, e: E): BSTNode<E> {
@@ -128,14 +204,14 @@ class BST<E> {
     }
   }
   
-  private minimum (node: BSTNode<E>): BSTNode<E> {
+  private _minimum (node: BSTNode<E>): BSTNode<E> {
     if (node.left === null) {
       return node
     }
     return minimum(node.left)
   }
 
-  private maximum (node: BSTNode<E>): BSTNode<E> {
+  private _maximum (node: BSTNode<E>): BSTNode<E> {
     if (node.right === null) {
       return node
     }
