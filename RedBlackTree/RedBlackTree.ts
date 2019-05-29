@@ -255,14 +255,14 @@ class RBTree<E> {
     if (node.left === null) {
       return node
     }
-    return minimum(node.left)
+    return this._minimum(node.left)
   }
 
   private _maximum (node: RBTNode<E>): RBTNode<E> {
     if (node.right === null) {
       return node
     }
-    return minimum(node.right)
+    return this._minimum(node.right)
   }
 
 }
