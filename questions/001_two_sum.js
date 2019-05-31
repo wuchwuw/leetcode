@@ -13,3 +13,15 @@ var twoSum = function(nums, target) {
       }
   }
 };
+
+var twoSum = function(nums, target) {
+  let record = new Map()
+  for (let i = 0; i < nums.length; i ++) {
+    let diff = target - nums[i]
+    if (record.has(diff)) {
+      return [record.get(diff), i]
+    } else {
+      record.set(nums[i], i)
+    }
+  }
+}
